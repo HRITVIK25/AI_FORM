@@ -28,5 +28,7 @@ model submissions{
   content Json
 }
 
+// Each submission belongs to a single form (formId is the foreign key) refrenced using id of form
+// One-to-Many Relationship: A Form can have multiple submissions, but each submission belongs to a single Form.
 
 
