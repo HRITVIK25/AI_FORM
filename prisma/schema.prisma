@@ -3,32 +3,34 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
-// creating schemas / model
-model Form{
-  id Int @id @default(autoincrement())
-  onwerId String
-  createdAt DateTime @default(now())
-  publish Boolean @default(false)
-  content Json
-  submissions Int @default(0)
-  shareUrl String @default(uuid())
+model Form {
+  id              Int           @id @default(autoincrement())
+  createdAt       DateTime      @default(now())
+  publish         Boolean       @default(false)
+  content         Json
+  submissions     Int           @default(0)
+  shareUrl        String        @default(uuid())
+  ownerId         String
   FormSubmissions submissions[]
 }
 
-model submissions{
-  id Int @id @default(autoincrement())
+model submissions {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  formId Int
-  form Form @relation(fields: [formId], references: [id]) // creating relation between submissions and form
-  content Json
+  formId    Int
+  content   Json
+  form      Form     @relation(fields: [formId], references: [id])
 }
 
-// Each submission belongs to a single form (formId is the foreign key) refrenced using id of form
-// One-to-Many Relationship: A Form can have multiple submissions, but each submission belongs to a single Form.
-
-
+model Subscription {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  subscribed Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

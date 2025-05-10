@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, {useState} from "react";
 import GenerateFormInput from "./GenerateFormInput";
 import { Button } from "./ui/button";
 
@@ -8,21 +8,28 @@ type SuggestionText = {
     text: string;
 };
 
-const HeroSection = () => {
-    const suggestionBtnText: SuggestionText[] = [
-        {
-        label: "Job Application",
-        text: "Develop a basic job application form that serves as a one-page solution form collecting essential information from applicants.",
-        },
-        {
-        label: "Registration Form",
-        text: "Create a course registration form suitable form any scheool or instituition.",
-        },
-        {
-        label: "Feedback Form",
-        text: "Create a client feedback form to gather valuable insights from any clients.",
-        },
-    ];
+const suggestionBtnText: SuggestionText[] = [
+    {
+    label: "Job Application",
+    text: "Develop a basic job application form that serves as a one-page solution form collecting essential information from applicants.",
+    },
+    {
+    label: "Registration Form",
+    text: "Create a course registration form suitable form any scheool or instituition.",
+    },
+    {
+    label: "Feedback Form",
+    text: "Create a client feedback form to gather valuable insights from any clients.",
+    },
+];
+
+type Props = {
+    totalForms: number;
+    isSubscribed: boolean
+}
+
+const HeroSection: React.FC<Props> = ({totalForms,isSubscribed}) => {
+    const [text,setText] = useState<string>("")
     return (
         <section>
         <div className="relative">
@@ -39,10 +46,12 @@ const HeroSection = () => {
             </p>
             </div>
         </div>
-            <GenerateFormInput />
+            <GenerateFormInput text={text} totalForms={totalForms} isSubscribed={isSubscribed} />
         <div className="grid grid-cols-4 gap-4">
             {suggestionBtnText.map((item: SuggestionText, index: number) => (
-            <Button className="rounded-full h-10" variant={'outline'} key={index}>
+            <Button
+            onClick={()=> setText(item.text)}
+            className="rounded-full h-10" variant={'outline'} key={index}>
                 {item.label}
             </Button>
             ))}
